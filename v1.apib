@@ -1,0 +1,540 @@
+FORMAT: 1A
+HOST:
+
+# AGNC
+
+## API Root [/]
+
+This resource does not have any attributes. Instead it offers the initial API affordances in the form of the links in the JSON body.
+
+It is recommend to follow the "url" link values or Link headers to get to resources instead of constructing your own URLs to keep your client decoupled from implementation details.
+
+### List Endpoints [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+        {
+          "objects_url": "/objects",
+          "types_url":   "/types",
+          "sets_url":    "/sets",
+          "agents_url":  "/agents"
+        }
+
+## Group Object
+
+Data objects in the API. An object is the most generic unit of data in the system.
+
+Objects have many attributes, only six of which are consistent across all objects:
+
+- `_id` : 128-bit UUID.
+- `_type` : References the object's type.
+- `_sets` : Ids of sets that include the object.
+- `_owner` : Agent id of object owner.
+- `public` : Boolean value for whether the object is publicly visible or private to the owning agent.
+- `created_at`: UTC timestamp for when object was first created.
+- `updated_at`: UTC timestamp for when object was last updated.
+
+The remaining _required_ attributes of an object are determined by the schema defined in its associated type. Objects may also have any number of arbitrary attributes not specified by its schema.
+
+## Object [/objects/{object_id}]
+
++ Parameters
+    + object_id: `d1ff2c9106a146f190b8a50422804a3a` (uuid, required) - unique id for object
+
+### Show Object [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+        {
+          "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+          "_type":      "Quote",
+          "_sets":      "#literature #american #truth #philosophy",
+          "_owner":     "@ada_lovelace",
+          "public":     true,
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "content":    "If you tell the truth, you don't have to remember anything.",
+          "context":    null,
+          "source":     "@mark_twain"
+        }
+
+### Update Object [PUT]
+
++ Request (application/json)
+
+        {
+          "_sets": "#literature #american #truth"
+        }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Location: /objects/d1ff2c9106a146f190b8a50422804a3a
+
+    + Body
+
+        {
+          "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+          "_type":      "Quote",
+          "_sets":      "#literature #american #truth",
+          "_owner":     "@ada_lovelace",
+          "public":     true,
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 18:21:02 GMT",
+          "content":    "If you tell the truth, you don't have to remember anything.",
+          "context":    null,
+          "source":     "@mark_twain"
+        }
+
+### Delete Object [DELETE]
+
+Only the owner or an admin agent may delete an object.
+
++ Response 204
+
+## Object Queries [/objects{?q,owner,type,set,page}]
+
++ Parameters
+    + q: `@ada_lovelace` (string, optional) - filter by query string
+    + owner: `@ada_lovelace` (string, optional) - filter by owner
+    + type: `Quote` (string, optional) - filter by type
+    + set: `#literature` (string, optional) - filter by set
+
+### Search Objects [GET]
+
+The `q` parameter takes a specifically formated query expression for searching objects. The syntax of the query expression informs the API how to search the object database.
+
+Some examples (not URI-escaped for clarity):
+
+- `?q=Bank statement September 2013` = return objects with attribute values that include **all** of the terms `Bank`, `statement`, `September`, and `2013`, sorted by relevance.
+- `?q="Bank statement" September 2013` = return objects with attribute values that include the **exact phrase** `Bank statement` and the terms `September` and `2013`
+- `?q=Bank statement September 2013 :account *8627` = return objects with attribute values that include **all** of the terms `Bank`, `statement`, `September`, and `2013`, and a value for attribute **account** ending in `8627`, sorted by relevance.
+- `?q=Bank statement + September 2013` = return the **union** of the two sub-queries `Bank statement` and `September 2013`
+- `?q=Bank statement | September 2013` = return the **intersection** of the two sub-queries `Bank statement` and `September 2013`
+- `?q=Bank statement - September 2013` = return the **set difference** of the two sub-queries `Bank statement` and `September 2013`
+- `?q=Bank statement + September 2013 | :account *8627` = return the **intersection** of the sub-queries `Bank statement + September 2013` and `:account *8627`
+
+The same set-operation query syntax can be used for the `set` parameter as well, for example:
+
+- `?set=#music #brazil` or `?set=#music | #brazil` = return the intersection of the sets `#music` and `#brazil`
+- `?set=#music + #brazil` = return the union of the sets `#music` and `#brazil`
+- `?set=#music - #brazil` = return the set difference of the sets `#music` and `#brazil`
+- `?set=#music | #brazil - #samba` = return the set difference of the sets `#music | #brazil` and `#samba`
+
+Follow the `next` link in the headers to retrieve the next page of objects.
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Link: </objects?query=queryhash&page=2>; rel="next"
+
+    + Body
+
+        [
+          {
+            "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+            "_type":      "Quote",
+            "_sets":      "#literature #american #truth #philosophy",
+            "_owner":     "@ada_lovelace",
+            "public":     true,
+            "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+            "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+            "content":    "If you tell the truth, you don't have to remember anything.",
+            "context":    null,
+            "source":     "@mark_twain"
+          },
+          {
+            // ...
+          }
+        ]
+
+## Object Creation [/objects]
+
+Any authenticated agent may create new objects.
+
+### Create Object [POST]
+
++ Request (application/json)
+
+        {
+          "_type":   "Quote",
+          "_sets":   "#literature #american #truth #philosophy",
+          "_owner":  "@ada_lovelace",
+          "content": "If you tell the truth, you don't have to remember anything.",
+          "source":  "@mark_twain"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Location: /objects/d1ff2c9106a146f190b8a50422804a3a
+
+    + Body
+
+        {
+          "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+          "_type":      "Quote",
+          "_sets":      "#literature #american #truth #philosophy",
+          "_owner":     "@ada_lovelace",
+          "public":     true,
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "content":    "If you tell the truth, you don't have to remember anything.",
+          "context":    null,
+          "source":     "@mark_twain"
+        }
+
+## Group Type
+
+The type system is used to define the schema for objects, defining which attributes they are required to have and the data type of those attributes.
+
+Types have the following attributes:
+
+- `_id` : Textual identifier for the type. First letter must be capitalized. Only alphanumeric characters and underscores allowed.
+- `_owner` : Reference to creating and managing agent for this resource.
+- `schema` : Defines object schema for all objects that utilize this type.
+
+## Type Definition [/types/{type_id}]
+
++ Parameters
+    + type_id: `quote` (string, required) - unique name for type
+
+### Show Type [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+        {
+          "_id":    "Quote",
+          "_owner": "@root",
+          "schema": {
+            "content": "String",
+            "context": "ObjectId?",
+            "source":  "AgentId"
+          }
+        }
+
+### Update Type [PUT]
+
+Only the owner of a type may make modifications to the type.
+
++ Request (application/json)
+
+        {
+          "schema": {
+            "content":  "String",
+            "language": "String?",
+            "context":  "ObjectId?",
+            "source":   "AgentId"
+          }
+        }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Location: /types/Quote
+
+    + Body
+
+        {
+          "_id":    "Quote",
+          "_owner": "@root",
+          "schema": {
+            "content":  "String",
+            "language": "String?",
+            "context":  "ObjectId?",
+            "source":   "AgentId"
+          }
+        }
+
+### Delete Type [DELETE]
+
+Only admin agents may delete types.
+
++ Response 204
+
+## Types Collection [/types]
+
+Follow the `next` link in the headers to retrieve the next page of objects.
+
+### List Types [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Link: </types?page=2>; rel="next"
+
+    + Body
+
+        [
+          {
+            "_id":    "Quote",
+            "_owner": "@root",
+            "schema": {
+              "content": "String",
+              "context": "ObjectId?",
+              "source":  "AgentId"
+            }
+          },
+          {
+            // ...
+          }
+        ]
+
+### Create Type [POST]
+
++ Request (application/json)
+
+        {
+          "_id":    "Quote",
+          "_owner": "@root",
+          "schema": {
+            "content": "String",
+            "context": "ObjectId?",
+            "source":  "AgentId"
+          }
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Location: /types/Quote
+
+    + Body
+
+        {
+          "_id":    "Quote",
+          "_owner": "@root",
+          "schema": {
+            "content": "String",
+            "context": "ObjectId?",
+            "source":  "AgentId"
+          }
+        }
+
+## Group Set
+
+Sets represent groupings of objects.
+
+Sets have the following attributes:
+
+- `_id` : Textual identifier for the set. First letter must be the octothorpe `#` character. After that, only alphanumeric characters and underscores allowed.
+- `objects` : Objects within the set.
+- `size` : Number of objects within the set.
+- `last_change` : Timestamp of latest change to the set (object added to or removed from set).
+
+By default all sets will _only_ return objects belonging to the requesting authenticated agent. To include objects belonging to any agent, set `exclusive` to `false`.
+
+### Show Set [GET /sets/{set_id}{?exclusive}]
+
++ Parameters
+    + set_id: `literature` (string, required) - unique name for set
+    + exclusive: `false` (boolean, optional) - if false, will include objects owned by _any_ agent, not just authenticated agent (defaults to true)
+
+Follow the `next` link in the headers to retrieve the next page of objects.
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Link: </sets/literature?page=2>; rel="next"
+
+    + Body
+
+        {
+          "_id": "#literature",
+          "objects": [
+            {
+              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+              "_type":      "Quote",
+              "_sets":      "#literature #american #truth #philosophy",
+              "_owner":     "@ada_lovelace",
+              "public":     true,
+              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "content":    "If you tell the truth, you don't have to remember anything.",
+              "context":    null,
+              "source":     "@mark_twain"
+            },
+            {
+              // ...
+            }
+          ],
+          "size":        82,
+          "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+        }
+
+### Delete Set [DELETE /sets/{set_id}]
+
++ Parameters
+    + set_id: `literature` (string, required) - unique name for set
+
+Deleting a set removes all references to the set from objects owned by the authenticated agent. It does not affect objects owned by other agents, so sets with the same name could still exist for other agents.
+
++ Response 204
+
+## Sets Collection [/sets]
+
+### List Sets [GET]
+
+Follow the `next` link in the headers to retrieve the next page of objects.
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Link: </sets?page=2>; rel="next"
+
+    + Body
+
+        [
+          {
+            "name":        "#literature",
+            "size":        82,
+            "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+          },
+          {
+            // ...
+          }
+        ]
+
+### Create Set [POST]
+
++ Request (application/json)
+
+        {
+          "name": "#bank_statements"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Location: /sets/bank_statements
+
+    + Body
+
+        {
+          "name":        "#bank_statements",
+          "size":        0,
+          "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+        }
+
+## Group Agent
+
+Agents represent units with agency in the system, i.e. users, admins, creators, moderators, etc.
+
+Agents have the following attributes:
+
+- `_id` : Textual identifier for the agent. Must start with a `@` character. Only alphanumeric characters and underscores allowed.
+- `name` : Agent's full name.
+- `email` : Agent's email address.
+- `password` : Encrypted password.
+
+## Agent Profile [/agents/{agent_id}]
+
++ Parameters
+    + agent_id: `@ada_lovelace` (string, required) - unique agent id
+
+### Show Agent [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+        {
+          "_id":        "@ada_lovelace",
+          "name":       "Ada Lovelace",
+          "email":      "ada@lovelace.com",
+          "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+        }
+
+### Update Agent [PUT]
+
++ Request (application/json)
+
+        {
+          "name": "Augusta Ada King",
+        }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Location: /agents/@ada_lovelace
+
+    + Body
+
+        {
+          "_id":        "@ada_lovelace",
+          "name":       "Augusta Ada King",
+          "email":      "ada@lovelace.com",
+          "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 19:02:16 GMT"
+        }
+
+### Delete Agent [DELETE]
+
+Only admin agents may delete agents permanently. For regular agents, deleting is equivalent to disabling their account.
+
++ Response 204
+
+## Agents Collection [/agents]
+
+### List Agents [GET]
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Headers
+
+        Link: </agents?page=2>; rel="next"
+
+    + Body
+
+        [
+          {
+            "_id":        "@ada_lovelace",
+            "name":       "Ada Lovelace",
+            "email":      "ada@lovelace.com",
+            "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+            "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+            "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+          },
+          {
+            // ...
+          }
+        ]
+
+### Create Agent [POST]
+
++ Request (application/json)
+
+        {
+          "_id":      "@ada_lovelace",
+          "name":     "Ada Lovelace",
+          "email":    "ada@lovelace.com",
+          "password": "byronbaby"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Location: /agents/@ada_lovelace
+
+    + Body
+
+        {
+          "_id":        "@ada_lovelace",
+          "name":       "Ada Lovelace",
+          "email":      "ada@lovelace.com",
+          "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+        }
