@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST:
+HOST: http://localhost:3000/
 
 # AGNC
 
@@ -49,7 +49,7 @@ The remaining _required_ attributes of an object are determined by the schema de
           "_id":        "d1ff2c9106a146f190b8a50422804a3a",
           "_type":      "Quote",
           "_sets":      "#literature #american #truth #philosophy",
-          "_owner":     "@ada_lovelace",
+          "_owner":     "@ada",
           "public":     true,
           "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
           "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -70,22 +70,22 @@ The remaining _required_ attributes of an object are determined by the schema de
 
     + Headers
 
-        Location: /objects/d1ff2c9106a146f190b8a50422804a3a
+            Location: /objects/d1ff2c9106a146f190b8a50422804a3a
 
     + Body
 
-        {
-          "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-          "_type":      "Quote",
-          "_sets":      "#literature #american #truth",
-          "_owner":     "@ada_lovelace",
-          "public":     true,
-          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-          "updated_at": "Mon, 28 Sep 2015 18:21:02 GMT",
-          "content":    "If you tell the truth, you don't have to remember anything.",
-          "context":    null,
-          "source":     "@mark_twain"
-        }
+            {
+              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+              "_type":      "Quote",
+              "_sets":      "#literature #american #truth",
+              "_owner":     "@ada",
+              "public":     true,
+              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "updated_at": "Mon, 28 Sep 2015 18:21:02 GMT",
+              "content":    "If you tell the truth, you don't have to remember anything.",
+              "context":    null,
+              "source":     "@mark_twain"
+            }
 
 ### Delete Object [DELETE]
 
@@ -93,11 +93,11 @@ Only the owner or an admin agent may delete an object.
 
 + Response 204
 
-## Object Queries [/objects{?q,owner,type,set,page}]
+## Object Queries [/objects{?q,owner,type,set}]
 
 + Parameters
-    + q: `@ada_lovelace` (string, optional) - filter by query string
-    + owner: `@ada_lovelace` (string, optional) - filter by owner
+    + q: `@ada` (string, optional) - filter by query string
+    + owner: `@ada` (string, optional) - filter by owner
     + type: `Quote` (string, optional) - filter by type
     + set: `#literature` (string, optional) - filter by set
 
@@ -128,27 +128,27 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Link: </objects?query=queryhash&page=2>; rel="next"
+            Link: </objects?query=queryhash&page=2>; rel="next"
 
     + Body
 
-        [
-          {
-            "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-            "_type":      "Quote",
-            "_sets":      "#literature #american #truth #philosophy",
-            "_owner":     "@ada_lovelace",
-            "public":     true,
-            "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-            "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-            "content":    "If you tell the truth, you don't have to remember anything.",
-            "context":    null,
-            "source":     "@mark_twain"
-          },
-          {
-            // ...
-          }
-        ]
+            [
+              {
+                "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+                "_type":      "Quote",
+                "_sets":      "#literature #american #truth #philosophy",
+                "_owner":     "@ada",
+                "public":     true,
+                "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                "content":    "If you tell the truth, you don't have to remember anything.",
+                "context":    null,
+                "source":     "@mark_twain"
+              },
+              {
+                // ...
+              }
+            ]
 
 ## Object Creation [/objects]
 
@@ -161,7 +161,7 @@ Any authenticated agent may create new objects.
         {
           "_type":   "Quote",
           "_sets":   "#literature #american #truth #philosophy",
-          "_owner":  "@ada_lovelace",
+          "_owner":  "@ada",
           "content": "If you tell the truth, you don't have to remember anything.",
           "source":  "@mark_twain"
         }
@@ -170,22 +170,22 @@ Any authenticated agent may create new objects.
 
     + Headers
 
-        Location: /objects/d1ff2c9106a146f190b8a50422804a3a
+            Location: /objects/d1ff2c9106a146f190b8a50422804a3a
 
     + Body
 
-        {
-          "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-          "_type":      "Quote",
-          "_sets":      "#literature #american #truth #philosophy",
-          "_owner":     "@ada_lovelace",
-          "public":     true,
-          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-          "content":    "If you tell the truth, you don't have to remember anything.",
-          "context":    null,
-          "source":     "@mark_twain"
-        }
+            {
+              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+              "_type":      "Quote",
+              "_sets":      "#literature #american #truth #philosophy",
+              "_owner":     "@ada",
+              "public":     true,
+              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "content":    "If you tell the truth, you don't have to remember anything.",
+              "context":    null,
+              "source":     "@mark_twain"
+            }
 
 ## Group Type
 
@@ -235,20 +235,20 @@ Only the owner of a type may make modifications to the type.
 
     + Headers
 
-        Location: /types/Quote
+            Location: /types/Quote
 
     + Body
 
-        {
-          "_id":    "Quote",
-          "_owner": "@root",
-          "schema": {
-            "content":  "String",
-            "language": "String?",
-            "context":  "ObjectId?",
-            "source":   "AgentId"
-          }
-        }
+            {
+              "_id":    "Quote",
+              "_owner": "@root",
+              "schema": {
+                "content":  "String",
+                "language": "String?",
+                "context":  "ObjectId?",
+                "source":   "AgentId"
+              }
+            }
 
 ### Delete Type [DELETE]
 
@@ -266,24 +266,24 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Link: </types?page=2>; rel="next"
+            Link: </types?page=2>; rel="next"
 
     + Body
 
-        [
-          {
-            "_id":    "Quote",
-            "_owner": "@root",
-            "schema": {
-              "content": "String",
-              "context": "ObjectId?",
-              "source":  "AgentId"
-            }
-          },
-          {
-            // ...
-          }
-        ]
+            [
+              {
+                "_id":    "Quote",
+                "_owner": "@root",
+                "schema": {
+                  "content": "String",
+                  "context": "ObjectId?",
+                  "source":  "AgentId"
+                }
+              },
+              {
+                // ...
+              }
+            ]
 
 ### Create Type [POST]
 
@@ -303,19 +303,19 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Location: /types/Quote
+            Location: /types/Quote
 
     + Body
 
-        {
-          "_id":    "Quote",
-          "_owner": "@root",
-          "schema": {
-            "content": "String",
-            "context": "ObjectId?",
-            "source":  "AgentId"
-          }
-        }
+            {
+              "_id":    "Quote",
+              "_owner": "@root",
+              "schema": {
+                "content": "String",
+                "context": "ObjectId?",
+                "source":  "AgentId"
+              }
+            }
 
 ## Group Set
 
@@ -342,32 +342,32 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Link: </sets/literature?page=2>; rel="next"
+            Link: </sets/literature?page=2>; rel="next"
 
     + Body
 
-        {
-          "_id": "#literature",
-          "objects": [
             {
-              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-              "_type":      "Quote",
-              "_sets":      "#literature #american #truth #philosophy",
-              "_owner":     "@ada_lovelace",
-              "public":     true,
-              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "content":    "If you tell the truth, you don't have to remember anything.",
-              "context":    null,
-              "source":     "@mark_twain"
-            },
-            {
-              // ...
+              "_id": "#literature",
+              "objects": [
+                {
+                  "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+                  "_type":      "Quote",
+                  "_sets":      "#literature #american #truth #philosophy",
+                  "_owner":     "@ada",
+                  "public":     true,
+                  "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                  "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                  "content":    "If you tell the truth, you don't have to remember anything.",
+                  "context":    null,
+                  "source":     "@mark_twain"
+                },
+                {
+                  // ...
+                }
+              ],
+              "size":        82,
+              "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
             }
-          ],
-          "size":        82,
-          "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
-        }
 
 ### Delete Set [DELETE /sets/{set_id}]
 
@@ -388,20 +388,20 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Link: </sets?page=2>; rel="next"
+            Link: </sets?page=2>; rel="next"
 
     + Body
 
-        [
-          {
-            "name":        "#literature",
-            "size":        82,
-            "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
-          },
-          {
-            // ...
-          }
-        ]
+            [
+              {
+                "name":        "#literature",
+                "size":        82,
+                "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+              },
+              {
+                // ...
+              }
+            ]
 
 ### Create Set [POST]
 
@@ -415,15 +415,15 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-        Location: /sets/bank_statements
+            Location: /sets/bank_statements
 
     + Body
 
-        {
-          "name":        "#bank_statements",
-          "size":        0,
-          "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
-        }
+            {
+              "name":        "#bank_statements",
+              "size":        0,
+              "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+            }
 
 ## Group Agent
 
@@ -439,14 +439,14 @@ Agents have the following attributes:
 ## Agent Profile [/agents/{agent_id}]
 
 + Parameters
-    + agent_id: `@ada_lovelace` (string, required) - unique agent id
+    + agent_id: `@ada` (string, required) - unique agent id
 
 ### Show Agent [GET]
 
 + Response 200 (application/json; charset=utf-8)
 
         {
-          "_id":        "@ada_lovelace",
+          "_id":        "@ada",
           "name":       "Ada Lovelace",
           "email":      "ada@lovelace.com",
           "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
@@ -466,18 +466,18 @@ Agents have the following attributes:
 
     + Headers
 
-        Location: /agents/@ada_lovelace
+            Location: /agents/@ada
 
     + Body
 
-        {
-          "_id":        "@ada_lovelace",
-          "name":       "Augusta Ada King",
-          "email":      "ada@lovelace.com",
-          "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
-          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-          "updated_at": "Mon, 28 Sep 2015 19:02:16 GMT"
-        }
+            {
+              "_id":        "@ada",
+              "name":       "Augusta Ada King",
+              "email":      "ada@lovelace.com",
+              "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "updated_at": "Mon, 28 Sep 2015 19:02:16 GMT"
+            }
 
 ### Delete Agent [DELETE]
 
@@ -493,30 +493,30 @@ Only admin agents may delete agents permanently. For regular agents, deleting is
 
     + Headers
 
-        Link: </agents?page=2>; rel="next"
+            Link: </agents?page=2>; rel="next"
 
     + Body
 
-        [
-          {
-            "_id":        "@ada_lovelace",
-            "name":       "Ada Lovelace",
-            "email":      "ada@lovelace.com",
-            "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
-            "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-            "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
-          },
-          {
-            // ...
-          }
-        ]
+            [
+              {
+                "_id":        "@ada",
+                "name":       "Ada Lovelace",
+                "email":      "ada@lovelace.com",
+                "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+                "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+              },
+              {
+                // ...
+              }
+            ]
 
 ### Create Agent [POST]
 
 + Request (application/json)
 
         {
-          "_id":      "@ada_lovelace",
+          "_id":      "@ada",
           "name":     "Ada Lovelace",
           "email":    "ada@lovelace.com",
           "password": "byronbaby"
@@ -526,15 +526,15 @@ Only admin agents may delete agents permanently. For regular agents, deleting is
 
     + Headers
 
-        Location: /agents/@ada_lovelace
+            Location: /agents/@ada
 
     + Body
 
-        {
-          "_id":        "@ada_lovelace",
-          "name":       "Ada Lovelace",
-          "email":      "ada@lovelace.com",
-          "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
-          "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-          "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
-        }
+            {
+              "_id":        "@ada",
+              "name":       "Ada Lovelace",
+              "email":      "ada@lovelace.com",
+              "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
+              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+            }
