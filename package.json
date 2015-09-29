@@ -1,0 +1,11 @@
+{
+  "name": "api.agnc.io",
+  "version": "0.0.0",
+  "description": "API for AGNC",
+  "main": "app.js",
+  "scripts": {
+    "test": "bin/test"
+  },
+  "author": "Tanner Welsh",
+  "license": "MIT"
+}
