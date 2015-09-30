@@ -5,7 +5,9 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser');
 
-var db = require('./db');
+var env = require('./env');
+
+var db = require('./db')(env.COUCHDB_HOST, env.COUCHDB_NAME);
 
 var routes = require('./routes/index');
 
