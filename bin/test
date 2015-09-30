@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+export NODE_ENV=test
+
+api () {
+  . "$NVM_DIR/nvm.sh"  # Load nvm
+  nvm exec 0.12.7 dredd
+}
+
+case "$1" in
+  api)
+    api
+    ;;
+  *)
+    api
+esac
