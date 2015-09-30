@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var env = require('../env'),
+    db = require('../db')(env.COUCHDB_HOST, env.COUCHDB_NAME);
+
+switch (process.argv[2]) {
+  case 'create':
+    db.create();
+    break;
+  case 'destroy':
+    db.destroy();
+    break;
+  default:
+    break;
+}

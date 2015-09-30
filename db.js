@@ -5,6 +5,9 @@ var DB = function(host, name) {
     create: function() {
       nano.db.create(name);
     },
+    destroy: function() {
+      nano.db.destroy(name);
+    },
     connect: function() {
       return nano.db.use(name);
     }
