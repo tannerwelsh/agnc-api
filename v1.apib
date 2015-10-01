@@ -27,9 +27,9 @@ Data objects in the API. An object is the most generic unit of data in the syste
 Objects have many attributes, only six of which are consistent across all objects:
 
 - `_id` : 128-bit UUID.
-- `_type` : References the object's type.
-- `_sets` : Ids of sets that include the object.
-- `_owner` : Agent id of object owner.
+- `type` : References the object's type.
+- `sets` : Ids of sets that include the object.
+- `owner` : Agent id of object owner.
 - `public` : Boolean value for whether the object is publicly visible or private to the owning agent.
 - `created_at`: UTC timestamp for when object was first created.
 - `updated_at`: UTC timestamp for when object was last updated.
@@ -47,9 +47,9 @@ The remaining _required_ attributes of an object are determined by the schema de
 
         {
           "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-          "_type":      "Quote",
-          "_sets":      "#literature #american #truth #philosophy",
-          "_owner":     "@ada",
+          "type":       "Quote",
+          "sets":       "#literature #american #truth #philosophy",
+          "owner":      "@ada",
           "public":     true,
           "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
           "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -63,7 +63,7 @@ The remaining _required_ attributes of an object are determined by the schema de
 + Request (application/json)
 
         {
-          "_sets": "#literature #american #truth"
+          "sets":  "#literature #american #truth"
         }
 
 + Response 200 (application/json; charset=utf-8)
@@ -76,9 +76,9 @@ The remaining _required_ attributes of an object are determined by the schema de
 
             {
               "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-              "_type":      "Quote",
-              "_sets":      "#literature #american #truth",
-              "_owner":     "@ada",
+              "type":       "Quote",
+              "sets":       "#literature #american #truth",
+              "owner":      "@ada",
               "public":     true,
               "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
               "updated_at": "Mon, 28 Sep 2015 18:21:02 GMT",
@@ -135,9 +135,9 @@ Follow the `next` link in the headers to retrieve the next page of objects.
             [
               {
                 "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-                "_type":      "Quote",
-                "_sets":      "#literature #american #truth #philosophy",
-                "_owner":     "@ada",
+                "type":       "Quote",
+                "sets":       "#literature #american #truth #philosophy",
+                "owner":      "@ada",
                 "public":     true,
                 "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
                 "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -159,9 +159,9 @@ Any authenticated agent may create new objects.
 + Request (application/json)
 
         {
-          "_type":   "Quote",
-          "_sets":   "#literature #american #truth #philosophy",
-          "_owner":  "@ada",
+          "type":    "Quote",
+          "sets":    "#literature #american #truth #philosophy",
+          "owner":   "@ada",
           "content": "If you tell the truth, you don't have to remember anything.",
           "source":  "@mark_twain"
         }
@@ -176,9 +176,9 @@ Any authenticated agent may create new objects.
 
             {
               "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-              "_type":      "Quote",
-              "_sets":      "#literature #american #truth #philosophy",
-              "_owner":     "@ada",
+              "type":       "Quote",
+              "sets":       "#literature #american #truth #philosophy",
+              "owner":      "@ada",
               "public":     true,
               "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
               "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -194,7 +194,7 @@ The type system is used to define the schema for objects, defining which attribu
 Types have the following attributes:
 
 - `_id` : Textual identifier for the type. First letter must be capitalized. Only alphanumeric characters and underscores allowed.
-- `_owner` : Reference to creating and managing agent for this resource.
+- `owner` : Reference to creating and managing agent for this resource.
 - `schema` : Defines object schema for all objects that utilize this type.
 
 ## Type Definition [/types/{type_id}]
@@ -208,7 +208,7 @@ Types have the following attributes:
 
         {
           "_id":    "Quote",
-          "_owner": "@root",
+          "owner":  "@root",
           "schema": {
             "content": "String",
             "context": "ObjectId?",
@@ -241,7 +241,7 @@ Only the owner of a type may make modifications to the type.
 
             {
               "_id":    "Quote",
-              "_owner": "@root",
+              "owner":  "@root",
               "schema": {
                 "content":  "String",
                 "language": "String?",
@@ -273,7 +273,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
             [
               {
                 "_id":    "Quote",
-                "_owner": "@root",
+                "owner":   "@root",
                 "schema": {
                   "content": "String",
                   "context": "ObjectId?",
@@ -291,7 +291,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
         {
           "_id":    "Quote",
-          "_owner": "@root",
+          "owner":  "@root",
           "schema": {
             "content": "String",
             "context": "ObjectId?",
@@ -309,7 +309,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
             {
               "_id":    "Quote",
-              "_owner": "@root",
+              "owner":  "@root",
               "schema": {
                 "content": "String",
                 "context": "ObjectId?",
@@ -351,9 +351,9 @@ Follow the `next` link in the headers to retrieve the next page of objects.
               "objects": [
                 {
                   "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-                  "_type":      "Quote",
-                  "_sets":      "#literature #american #truth #philosophy",
-                  "_owner":     "@ada",
+                  "type":       "Quote",
+                  "sets":       "#literature #american #truth #philosophy",
+                  "owner":      "@ada",
                   "public":     true,
                   "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
                   "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
