@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var env = require('../env'),
-    db = require('../db')(env.COUCHDB_HOST, env.COUCHDB_NAME);
+    db = require('../db')(env.COUCHDB_HOST, env.COUCHDB_NAME),
+    seed = require('../utils/seed');
 
 switch (process.argv[2]) {
   case 'create':
@@ -9,6 +10,13 @@ switch (process.argv[2]) {
     break;
   case 'destroy':
     db.destroy();
+    break;
+  case 'reset':
+    db.create();
+    db.destroy();
+    break;
+  case 'seed':
+    seed(db.connect());
     break;
   default:
     break;
