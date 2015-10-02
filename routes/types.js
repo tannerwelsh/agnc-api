@@ -26,8 +26,10 @@ function typesRouter(express, db) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      res.append('Location', req.originalUrl + '/' + body.id);
-      res.json(body);
+      var type = { _id: body.id, _rev: body.rev };
+      res.append('Location', req.originalUrl + '/' + type._id)
+         .status(201)
+         .json(type);
     });
   });
 
