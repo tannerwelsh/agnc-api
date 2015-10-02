@@ -2,6 +2,16 @@ var Objects, Types, Agents;
 
 Objects = [
   {
+    _id:        'd1ff2c9106a146f190b8a50422804a3a',
+    type:       'Quote',
+    sets:       '#literature #american #truth #philosophy',
+    owner:      '@ada',
+    public:     true,
+    content:    "If you tell the truth, you don't have to remember anything.",
+    context:    null,
+    source:     '@mark_twain'
+  },
+  {
     type:       'Quote',
     owner:      '@nemo',
     content:    "A great nation is not saved by wars, James said; it is saved \"by acts without picturesqueness; by speaking, writing, voting reasonably; by smiting corruption swiftly; by good temper between parties; by the people knowing true men when they see them, and preferring them as leaders to rabid partisans or empty quacks.\"",
@@ -128,14 +138,34 @@ Agents = [
     name:       'odysseus',
     email:      'odysseus@agnc.io',
     password:   'ithaca'
+  },
+  {
+    _id:        '@ada',
+    name:       'Ada Lovelace',
+    email:      'ada@lovelace.com',
+    password:   'byronbaby'
+  },
+  {
+    _id:        '@mark_twain',
+    name:       'Mark Twain',
+    email:      'mark@twain.com',
+    password:   'huckandtom'
   }
 ];
+
+function prepareDocs(docs) {
+  return docs.map(function(doc) {
+    doc.created_at = (new Date()).toUTCString();
+    doc.updated_at = (new Date()).toUTCString();
+    return doc;
+  });
+}
 
 function seed(db) {
   var docs = [Objects, Types, Agents];
 
   docs.forEach(function(doclist) {
-    db.bulk({ docs: doclist }, function(err, body) {
+    db.bulk({ docs: prepareDocs(doclist) }, function(err, body) {
       if (err) return console.error(err.message);
       console.log(body);
     });
