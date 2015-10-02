@@ -4,6 +4,7 @@
   "description": "API for AGNC",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon bin/server",
     "test": "bin/test"
   },
   "author": "Tanner Welsh",
@@ -19,5 +20,8 @@
     "morgan": "^1.6.1",
     "nano": "^6.1.5",
     "serve-favicon": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.7.1"
   }
 }
