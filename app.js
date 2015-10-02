@@ -7,9 +7,12 @@ var express = require('express'),
 
 var env = require('./env');
 
-var db = require('./db')(env.COUCHDB_HOST, env.COUCHDB_NAME);
+var db = require('./db')(env.COUCHDB_HOST, env.COUCHDB_NAME).connect();
 
-var routes = require('./routes/index');
+var routes = require('./routes/index'),
+    objects = require('./routes/objects')(express, db),
+    types = require('./routes/types')(express, db),
+    agents = require('./routes/agents')(express, db);
 
 var app = express();
 
@@ -26,6 +29,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/objects', objects);
+app.use('/types', types);
+app.use('/agents', agents);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
