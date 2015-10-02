@@ -13,8 +13,11 @@ switch (process.argv[2]) {
     db.destroy();
     break;
   case 'reset':
-    db.create();
     db.destroy();
+    db.create();
+    var connection = db.connect();
+    seed(connection);
+    design(connection);
     break;
   case 'seed':
     seed(db.connect());
