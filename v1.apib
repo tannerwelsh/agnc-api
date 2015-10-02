@@ -175,16 +175,8 @@ Any authenticated agent may create new objects.
     + Body
 
             {
-              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-              "type":       "Quote",
-              "sets":       "#literature #american #truth #philosophy",
-              "owner":      "@ada",
-              "public":     true,
-              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "content":    "If you tell the truth, you don't have to remember anything.",
-              "context":    null,
-              "source":     "@mark_twain"
+              "_id":  "d1ff2c9106a146f190b8a50422804a3a",
+              "_rev": "1-fe9546206797e28ef3be11480bc0788c"
             }
 
 ## Group Type
@@ -308,13 +300,8 @@ Follow the `next` link in the headers to retrieve the next page of objects.
     + Body
 
             {
-              "_id":    "Quote",
-              "owner":  "@root",
-              "schema": {
-                "content": "String",
-                "context": "ObjectId?",
-                "source":  "AgentId"
-              }
+              "_id":  "Quote",
+              "_rev": "1-cb3d317200ab9ac092461728fa5f474f"
             }
 
 ## Group Set
@@ -394,7 +381,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
             [
               {
-                "name":        "#literature",
+                "_id":         "#literature",
                 "size":        82,
                 "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
               },
@@ -408,7 +395,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 + Request (application/json)
 
         {
-          "name": "#bank_statements"
+          "_id": "#bank_statements"
         }
 
 + Response 201 (application/json; charset=utf-8)
@@ -420,9 +407,8 @@ Follow the `next` link in the headers to retrieve the next page of objects.
     + Body
 
             {
-              "name":        "#bank_statements",
-              "size":        0,
-              "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+              "_id":  "#bank_statements",
+              "_rev": "1-7129fd1022219113f3792191589aab5c"
             }
 
 ## Group Agent
@@ -531,10 +517,6 @@ Only admin agents may delete agents permanently. For regular agents, deleting is
     + Body
 
             {
-              "_id":        "@ada",
-              "name":       "Ada Lovelace",
-              "email":      "ada@lovelace.com",
-              "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
-              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT"
+              "_id":  "@ada",
+              "_rev": "1-56937d34aea865ee9a5353f2e7133cbe"
             }
