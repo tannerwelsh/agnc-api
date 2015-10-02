@@ -26,7 +26,7 @@ function objectsRouter(express, db) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      res.append('Location', req.originalUrl + body.id);
+      res.append('Location', req.originalUrl + '/' + body.id);
       res.json(body);
     });
   });
