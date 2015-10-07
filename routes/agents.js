@@ -25,15 +25,6 @@ function agentsRouter(express, db) {
     });
   });
 
-  router.get('/:agent_id', function(req, res, next) {
-    db.get(req.params.agent_id, function(err, body) {
-      if (err)
-        return res.json({error: err.error, message: err.message});
-
-      res.json(body);
-    });
-  });
-
   router.post('/', function(req, res, next) {
     db.insert(req.body, function(err, body) {
       if (err)
@@ -46,34 +37,44 @@ function agentsRouter(express, db) {
     });
   });
 
+  router.param('agent_id', function(req, res, next, agent_id) {
+    if (agent_id[0] !== '@')
+      agent_id = '@'+agent_id;
+
+    db.get(agent_id, function(err, agent) {
+      if (err) {
+        next(err);
+      } else if (agent) {
+        req.agent = agent;
+        next();
+      } else {
+        next(new Error('Failed to find agent '+agent_id));
+      }
+    });
+  });
+
+  router.get('/:agent_id', function(req, res, next) {
+    res.json(req.agent);
+  });
+
   router.put('/:agent_id', function(req, res, next) {
-    db.get(req.params.agent_id, function(err, body) {
+    var updatedObject = merge(req.agent, req.body);
+    db.insert(updatedObject, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      var updatedObject = merge(body, req.body);
-      db.insert(updatedObject, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.append('Location', req.originalUrl);
-        res.json(body);
-      });
+      res.append('Location', req.originalUrl);
+      res.json(body);
     });
   });
 
   router.delete('/:agent_id', function(req, res, next) {
-    db.get(req.params.agent_id, function(err, body) {
+    db.destroy(req.agent._id, req.agent._rev, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      db.destroy(req.params.agent_id, body._rev, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.status(204);
-        res.json(body);
-      });
+      res.status(204);
+      res.send();
     });
   });
 

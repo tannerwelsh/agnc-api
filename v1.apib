@@ -416,7 +416,7 @@ Agents have the following attributes:
 ## Agent Profile [/agents/{agent_id}]
 
 + Parameters
-    + agent_id: `@ada` (string, required) - unique agent id
+    + agent_id: `ada` (string, required) - unique agent id
 
 ### Show Agent [GET]
 
@@ -436,7 +436,7 @@ Agents have the following attributes:
 + Request (application/json)
 
         {
-          "name": "Augusta Ada King",
+          "name": "Augusta Ada King"
         }
 
 + Response 200 (application/json; charset=utf-8)
@@ -446,14 +446,10 @@ Agents have the following attributes:
             Location: /agents/@ada
 
     + Body
-
             {
-              "_id":        "@ada",
-              "name":       "Augusta Ada King",
-              "email":      "ada@lovelace.com",
-              "password":   "7298fa15f3f94bb88429f45b4c3e0e61",
-              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "updated_at": "Mon, 28 Sep 2015 19:02:16 GMT"
+              "ok":  true,
+              "id":  "@ada",
+              "rev": "2-7810e803a7c45b8b26d7dfde169c60b1"
             }
 
 ### Delete Agent [DELETE]
