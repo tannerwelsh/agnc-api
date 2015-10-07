@@ -4,9 +4,17 @@ function objectsRouter(express, db) {
   var router = express.Router();
 
   router.get('/', function(req, res, next) {
-    db.view('objects', 'all', function(err, body) {
+    var limit = 10,
+        page = Number(req.query.page) || 1,
+        nxpg = page + 1,
+        skip = (page - 1) * limit;
+
+    db.view('objects', 'all', {limit: limit, skip: skip}, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
+
+      if (Number(body.total_rows) > limit * page)
+        res.append('Link', '</objects?page='+nxpg+'>; rel="next"');
 
       res.json(body.rows.map(function(doc) { return doc.value; }));
     });
