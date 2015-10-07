@@ -276,12 +276,13 @@ Follow the `next` link in the headers to retrieve the next page of types. If the
 + Request (application/json)
 
         {
-          "_id":    "Quote",
+          "_id":    "Movie",
           "owner":  "@root",
           "schema": {
-            "content": "String",
-            "context": "ObjectId?",
-            "source":  "AgentId"
+            "title": "String",
+            "genre": "String?",
+            "director": "ObjectId?",
+            "duration": "Number?"
           }
         }
 
@@ -289,12 +290,12 @@ Follow the `next` link in the headers to retrieve the next page of types. If the
 
     + Headers
 
-            Location: /types/Quote
+            Location: /types/Movie
 
     + Body
 
             {
-              "_id":  "Quote",
+              "_id":  "Movie",
               "_rev": "1-cb3d317200ab9ac092461728fa5f474f"
             }
 
