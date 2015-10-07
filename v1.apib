@@ -247,7 +247,7 @@ Only admin agents may delete types.
 
 ## Types Collection [/types]
 
-Follow the `next` link in the headers to retrieve the next page of typessetsIf If there is no `next` link, then it is the last page. there is no `next` link, then it is the last page.
+Follow the `next` link in the headers to retrieve the next page of types. If there is no `next` link, then it is the last page.
 
 ### List Types [GET]
 
@@ -313,11 +313,11 @@ By default all sets will _only_ return objects belonging to the requesting authe
 
 ### Show Set [GET /sets/{set_id}{?exclusive}]
 
+Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
+
 + Parameters
     + set_id: `literature` (string, required) - unique name for set
     + exclusive: `false` (boolean, optional) - if false, will include objects owned by _any_ agent, not just authenticated agent (defaults to true)
-
-Follow the `next` link in the headers to retrieve the next page of setssetsI If there is no `next` link, then it is the last page.f  there is no `next` link, then it is the last page.
 
 + Response 200 (application/json; charset=utf-8)
 
@@ -352,10 +352,10 @@ Follow the `next` link in the headers to retrieve the next page of setssetsI If 
 
 ### Delete Set [DELETE /sets/{set_id}]
 
+Deleting a set removes all references to the set from objects owned by the authenticated agent. It does not affect objects owned by other agents, so sets with the same name could still exist for other agents.
+
 + Parameters
     + set_id: `literature` (string, required) - unique name for set
-
-Deleting a set removes all references to the set from objects owned by the authenticated agent. It does not affect objects owned by other agents, so sets with the same name could still exist for other agents.
 
 + Response 204
 
@@ -363,7 +363,7 @@ Deleting a set removes all references to the set from objects owned by the authe
 
 ### List Sets [GET]
 
-Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
+Follow the `next` link in the headers to retrieve the next page of sets. If there is no `next` link, then it is the last page.
 
 + Response 200 (application/json; charset=utf-8)
 
