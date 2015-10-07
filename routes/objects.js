@@ -6,17 +6,22 @@ function objectsRouter(express, db) {
   router.get('/', function(req, res, next) {
     var limit = 10,
         page = Number(req.query.page) || 1,
-        nxpg = page + 1,
+        nextpg = page + 1,
         skip = (page - 1) * limit;
 
     db.view('objects', 'all', {limit: limit, skip: skip}, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      if (Number(body.total_rows) > limit * page)
-        res.append('Link', '</objects?page='+nxpg+'>; rel="next"');
+      var count = Number(body.total_rows),
+          lastpg = Math.ceil(count / limit),
+          link = '<'+req.originalUrl+'?page='+lastpg+'>; rel="last"';
 
-      res.json(body.rows.map(function(doc) { return doc.value; }));
+      if (page != lastpg)
+        link = '<'+req.originalUrl+'?page='+nextpg+'>; rel="next", ' + link;
+
+      res.append('Link', link)
+         .json(body.rows.map(function(doc) { return doc.value; }));
     });
   });
 

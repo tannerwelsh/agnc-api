@@ -122,13 +122,13 @@ The same set-operation query syntax can be used for the `set` parameter as well,
 - `?set=#music - #brazil` = return the set difference of the sets `#music` and `#brazil`
 - `?set=#music | #brazil - #samba` = return the set difference of the sets `#music | #brazil` and `#samba`
 
-Follow the `next` link in the headers to retrieve the next page of objects.
+Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
 
 + Response 200 (application/json; charset=utf-8)
 
     + Headers
 
-            Link: </objects?query=queryhash&page=2>; rel="next"
+            Link: </objects?query=queryhash&page=2>; rel="next", </objects?query=queryhash&page=4>; rel="last"
 
     + Body
 
@@ -247,7 +247,7 @@ Only admin agents may delete types.
 
 ## Types Collection [/types]
 
-Follow the `next` link in the headers to retrieve the next page of objects.
+Follow the `next` link in the headers to retrieve the next page of typessetsIf If there is no `next` link, then it is the last page. there is no `next` link, then it is the last page.
 
 ### List Types [GET]
 
@@ -255,7 +255,7 @@ Follow the `next` link in the headers to retrieve the next page of objects.
 
     + Headers
 
-            Link: </types?page=2>; rel="next"
+            Link: </types?page=2>; rel="next", </types?page=5>; rel="last"
 
     + Body
 
@@ -317,13 +317,13 @@ By default all sets will _only_ return objects belonging to the requesting authe
     + set_id: `literature` (string, required) - unique name for set
     + exclusive: `false` (boolean, optional) - if false, will include objects owned by _any_ agent, not just authenticated agent (defaults to true)
 
-Follow the `next` link in the headers to retrieve the next page of objects.
+Follow the `next` link in the headers to retrieve the next page of setssetsI If there is no `next` link, then it is the last page.f  there is no `next` link, then it is the last page.
 
 + Response 200 (application/json; charset=utf-8)
 
     + Headers
 
-            Link: </sets/literature?page=2>; rel="next"
+            Link: </sets/literature?page=2>; rel="next", </sets/literature?page=18>; rel="last"
 
     + Body
 
@@ -363,13 +363,13 @@ Deleting a set removes all references to the set from objects owned by the authe
 
 ### List Sets [GET]
 
-Follow the `next` link in the headers to retrieve the next page of objects.
+Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
 
 + Response 200 (application/json; charset=utf-8)
 
     + Headers
 
-            Link: </sets?page=2>; rel="next"
+            Link: </sets?page=2>; rel="next", </sets?page=91>; rel="last"
 
     + Body
 
@@ -466,11 +466,13 @@ Only admin agents may delete agents permanently. For regular agents, deleting is
 
 ### List Agents [GET]
 
+Follow the `next` link in the headers to retrieve the next page of agents. If there is no `next` link, then it is the last page.
+
 + Response 200 (application/json; charset=utf-8)
 
     + Headers
 
-            Link: </agents?page=2>; rel="next"
+            Link: </agents?page=2>; rel="next", </agents?page=10>; rel="last"
 
     + Body
 

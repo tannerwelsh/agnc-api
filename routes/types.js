@@ -4,11 +4,24 @@ function typesRouter(express, db) {
   var router = express.Router();
 
   router.get('/', function(req, res, next) {
-    db.view('types', 'all', function(err, body) {
+    var limit = 10,
+        page = Number(req.query.page) || 1,
+        nextpg = page + 1,
+        skip = (page - 1) * limit;
+
+    db.view('types', 'all', {limit: limit, skip: skip}, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      res.json(body.rows.map(function(doc) { return doc.value; }));
+      var count = Number(body.total_rows),
+          lastpg = Math.ceil(count / limit),
+          link = '<'+req.originalUrl+'?page='+lastpg+'>; rel="last"';
+
+      if (page != lastpg)
+        link = '<'+req.originalUrl+'?page='+nextpg+'>; rel="next", ' + link;
+
+      res.append('Link', link)
+         .json(body.rows.map(function(doc) { return doc.value; }));
     });
   });
 
