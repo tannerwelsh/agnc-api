@@ -2,11 +2,11 @@ var DB = function(host, name) {
   var nano = require('nano')(host);
 
   return {
-    create: function() {
-      nano.db.create(name);
+    create: function(cb) {
+      nano.db.create(name, cb);
     },
-    destroy: function() {
-      nano.db.destroy(name);
+    destroy: function(cb) {
+      nano.db.destroy(name, cb);
     },
     connect: function() {
       return nano.db.use(name);

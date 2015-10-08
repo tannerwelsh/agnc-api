@@ -13,11 +13,15 @@ switch (process.argv[2]) {
     db.destroy();
     break;
   case 'reset':
-    db.destroy();
-    db.create();
-    var connection = db.connect();
-    seed(connection);
-    design(connection);
+    db.destroy(function(err) {
+      if (err) return console.error(err);
+      db.create(function(err) {
+        if (err) return console.error(err);
+        var connection = db.connect();
+        seed(connection);
+        design(connection);
+      });
+    });
     break;
   case 'seed':
     seed(db.connect());
