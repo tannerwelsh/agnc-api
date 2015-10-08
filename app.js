@@ -28,10 +28,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
 app.use('/objects', objects);
 app.use('/types', types);
 app.use('/agents', agents);
+app.use('/', routes(express, app));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

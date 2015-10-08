@@ -14,10 +14,30 @@ It is recommend to follow the "url" link values or Link headers to get to resour
 + Response 200 (application/json; charset=utf-8)
 
         {
-          "objects_url": "/objects",
-          "types_url":   "/types",
-          "sets_url":    "/sets",
-          "agents_url":  "/agents"
+          "/objects": [
+            "GET: /",
+            "GET: /:object_id",
+            "POST: /",
+            "PUT: /:object_id",
+            "DELETE: /:object_id"
+          ],
+          "/types": [
+            "GET: /",
+            "POST: /",
+            "GET: /:type_id",
+            "PUT: /:type_id",
+            "DELETE: /:type_id"
+          ],
+          "/agents": [
+            "GET: /",
+            "POST: /",
+            "GET: /:agent_id",
+            "PUT: /:agent_id",
+            "DELETE: /:agent_id"
+          ],
+          "/": [
+            "GET: /"
+          ]
         }
 
 ## Group Object
