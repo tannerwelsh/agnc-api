@@ -229,14 +229,9 @@ Only the owner of a type may make modifications to the type.
     + Body
 
             {
-              "_id":    "Quote",
-              "owner":  "@root",
-              "schema": {
-                "content":  "String",
-                "language": "String?",
-                "context":  "ObjectId?",
-                "source":   "AgentId"
-              }
+              "ok":  true,
+              "id":  "Quote",
+              "rev": "2-765691fe8d09417b9c12cb377825da34"
             }
 
 ### Delete Type [DELETE]
@@ -261,12 +256,12 @@ Follow the `next` link in the headers to retrieve the next page of types. If the
 
             [
               {
-                "_id":    "Quote",
-                "owner":   "@root",
+                "_id":    "Book",
+                "owner":  "@root",
                 "schema": {
-                  "content": "String",
-                  "context": "ObjectId?",
-                  "source":  "AgentId"
+                  "title":     "String",
+                  "author":    "String",
+                  "author_id": "Id?"
                 }
               }
             ]

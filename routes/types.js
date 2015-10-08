@@ -25,15 +25,6 @@ function typesRouter(express, db) {
     });
   });
 
-  router.get('/:type_id', function(req, res, next) {
-    db.get(req.params.type_id, function(err, body) {
-      if (err)
-        return res.json({error: err.error, message: err.message});
-
-      res.json(body);
-    });
-  });
-
   router.post('/', function(req, res, next) {
     db.insert(req.body, function(err, body) {
       if (err)
@@ -46,34 +37,44 @@ function typesRouter(express, db) {
     });
   });
 
+  router.param('type_id', function(req, res, next, type_id) {
+    if (type_id[0] !== type_id[0].toUpperCase())
+      type_id = type_id[0].toUpperCase() + type_id.substr(1);
+
+    db.get(type_id, function(err, type) {
+      if (err) {
+        next(err);
+      } else if (type) {
+        req.typeObj = type;
+        next();
+      } else {
+        next(new Error('Failed to find type '+type_id));
+      }
+    });
+  });
+
+  router.get('/:type_id', function(req, res, next) {
+    res.json(req.typeObj);
+  });
+
   router.put('/:type_id', function(req, res, next) {
-    db.get(req.params.type_id, function(err, body) {
+    var updatedType = merge(req.typeObj, req.body);
+    db.insert(updatedType, function(err, type) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      var updatedObject = merge(body, req.body);
-      db.insert(updatedObject, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.append('Location', req.originalUrl);
-        res.json(body);
-      });
+      res.append('Location', req.originalUrl);
+      res.json(type);
     });
   });
 
   router.delete('/:type_id', function(req, res, next) {
-    db.get(req.params.type_id, function(err, body) {
+    db.destroy(req.typeObj._id, req.typeObj._rev, function(err, _) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      db.destroy(req.params.type_id, body._rev, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.status(204);
-        res.json(body);
-      });
+      res.status(204);
+      res.send();
     });
   });
 
