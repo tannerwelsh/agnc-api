@@ -177,7 +177,6 @@ function seed(db) {
   docs.forEach(function(doclist) {
     db.bulk({ docs: prepareDocs(doclist) }, function(err, body) {
       if (err) return console.error(err.message);
-      console.log(body);
     });
   });
 }

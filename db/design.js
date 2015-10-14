@@ -28,13 +28,30 @@ var designDocs = [
         map: function(doc) { if(doc.email && doc.password) emit(null, doc); }
       }
     }
+  },
+  {
+    _id: '_design/sets',
+    language: 'javascript',
+    views: {
+      all: {
+        map: function(doc) {
+          if(!doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit(set, 1);
+          });
+        },
+        reduce: function(keys, values, rereduce) {
+          return sum(values);
+        }
+      }
+    }
   }
 ];
 
 function insertDesign(db) {
   db.bulk({ docs: designDocs }, function(err, body) {
     if (err) return console.error(err.message);
-    console.log(body);
   });
 }
 
