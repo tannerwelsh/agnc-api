@@ -95,16 +95,9 @@ The remaining _required_ attributes of an object are determined by the schema de
     + Body
 
             {
-              "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-              "type":       "Quote",
-              "sets":       "#literature #american #truth",
-              "owner":      "@ada",
-              "public":     true,
-              "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-              "updated_at": "Mon, 28 Sep 2015 18:21:02 GMT",
-              "content":    "If you tell the truth, you don't have to remember anything.",
-              "context":    null,
-              "source":     "@mark_twain"
+              "ok":  true,
+              "id":  "d1ff2c9106a146f190b8a50422804a3a",
+              "rev": "2-e7e415b2ab725858774ff650c8e1924e"
             }
 
 ### Delete Object [DELETE]
@@ -176,23 +169,24 @@ Any authenticated agent may create new objects.
 + Request (application/json)
 
         {
-          "type":    "Quote",
-          "sets":    "#literature #american #truth #philosophy",
-          "owner":   "@ada",
-          "content": "If you tell the truth, you don't have to remember anything.",
-          "source":  "@mark_twain"
+          "type":      "Book",
+          "sets":      "#systems #theory",
+          "owner":     "@odysseus",
+          "title":     "Thinking in Systems",
+          "author":    "Donella Meadows",
+          "author_id": "faa732ca88c64f55964f4b4c6bde382c"
         }
 
 + Response 201 (application/json; charset=utf-8)
 
     + Headers
 
-            Location: /objects/d1ff2c9106a146f190b8a50422804a3a
+            Location: /objects/53b72533165045b4bcd3e2333e58c773
 
     + Body
 
             {
-              "_id":  "d1ff2c9106a146f190b8a50422804a3a",
+              "_id":  "53b72533165045b4bcd3e2333e58c773",
               "_rev": "1-fe9546206797e28ef3be11480bc0788c"
             }
 
