@@ -25,15 +25,6 @@ function objectsRouter(express, db) {
     });
   });
 
-  router.get('/:object_id', function(req, res, next) {
-    db.get(req.params.object_id, function(err, body) {
-      if (err)
-        return res.json({error: err.error, message: err.message});
-
-      res.json(body);
-    });
-  });
-
   router.post('/', function(req, res, next) {
     db.insert(req.body, function(err, body) {
       if (err)
@@ -46,34 +37,41 @@ function objectsRouter(express, db) {
     });
   });
 
+  router.param('object_id', function(req, res, next, obj_id) {
+    db.get(obj_id, function(err, obj) {
+      if (err) {
+        next(err);
+      } else if (obj) {
+        req.obj = obj;
+        next();
+      } else {
+        next(new Error('Failed to find object '+obj_id));
+      }
+    });
+  });
+
+  router.get('/:object_id', function(req, res, next) {
+    res.json(req.obj);
+  });
+
   router.put('/:object_id', function(req, res, next) {
-    db.get(req.params.object_id, function(err, body) {
+    var updatedObject = merge(req.obj, req.body);
+    db.insert(updatedObject, function(err, obj) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      var updatedObject = merge(body, req.body);
-      db.insert(updatedObject, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.append('Location', req.originalUrl);
-        res.json(body);
-      });
+      res.append('Location', req.originalUrl);
+      res.json(obj);
     });
   });
 
   router.delete('/:object_id', function(req, res, next) {
-    db.get(req.params.object_id, function(err, body) {
+    db.destroy(req.obj._id, req.obj._rev, function(err, _) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
-      db.destroy(req.params.object_id, body._rev, function(err, body) {
-        if (err)
-          return res.json({error: err.error, message: err.message});
-
-        res.status(204);
-        res.json(body);
-      });
+      res.status(204);
+      res.send();
     });
   });
 
