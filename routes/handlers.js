@@ -1,25 +1,31 @@
 var merge = require('merge');
 
-function listResources(db, viewName) {
-  return function(req, res, next) {
-    var limit = 10,
-        page = Number(req.query.page) || 1,
-        nextpg = page + 1,
-        skip = (page - 1) * limit;
+function listResources(db, viewName, opts) {
+  opts = opts || {};
 
-    db.view(viewName, 'all', {limit: limit, skip: skip}, function(err, body) {
+  var remap = opts.remap || function(doc) { return doc.value; };
+  delete opts.remap;
+
+  return function(req, res, next) {
+    var page = Number(req.query.page) || 1,
+        nextpg = page + 1;
+
+    opts.limit = opts.limit || 10;
+    opts.skip = (page - 1) * opts.limit;
+
+    db.view(viewName, 'all', opts, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
       var count = Number(body.total_rows),
-          lastpg = Math.ceil(count / limit),
+          lastpg = Math.ceil(count / opts.limit),
           link = '<'+req.originalUrl+'?page='+lastpg+'>; rel="last"';
 
       if (page != lastpg)
         link = '<'+req.originalUrl+'?page='+nextpg+'>; rel="next", ' + link;
 
       res.append('Link', link)
-         .json(body.rows.map(function(doc) { return doc.value; }));
+         .json(body.rows.map(remap));
     });
   };
 }
