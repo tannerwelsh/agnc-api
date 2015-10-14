@@ -4,7 +4,7 @@ Objects = [
   {
     _id:        'd1ff2c9106a146f190b8a50422804a3a',
     type:       'Quote',
-    sets:       '#literature #american #truth #philosophy',
+    sets:       ['#literature', '#american', '#truth', '#philosophy'],
     owner:      '@ada',
     public:     true,
     content:    "If you tell the truth, you don't have to remember anything.",
@@ -13,6 +13,7 @@ Objects = [
   },
   {
     type:       'Quote',
+    sets:       ['#nationhood', '#williamjames', '#philosophy'],
     owner:      '@nemo',
     content:    "A great nation is not saved by wars, James said; it is saved \"by acts without picturesqueness; by speaking, writing, voting reasonably; by smiting corruption swiftly; by good temper between parties; by the people knowing true men when they see them, and preferring them as leaders to rabid partisans or empty quacks.\"",
     context:    'The Metaphysical Club',
@@ -23,6 +24,7 @@ Objects = [
   },
   {
     type:       'Quote',
+    sets:       ['#capitalism', '#philosophy'],
     owner:      '@nemo',
     content:    "Nineteenth-century liberals believed that the market operated like nature because they had already decided that nature operated like a market.",
     context:    'The Metaphysical Club',
@@ -33,6 +35,7 @@ Objects = [
   },
   {
     type:       'Quote',
+    sets:       ['#expression', '#debate', '#philosophy'],
     owner:      '@nemo',
     content:    "We permit free expression because we need the resources of the whole group to get us the ideas we need. Thinking is a social activity. I tolerate your thought because it is part of my thought--even when my thought defines itself in opposition to yours.",
     context:    'The Metaphysical Club',
@@ -43,6 +46,7 @@ Objects = [
   },
   {
     type:       'Quote',
+    sets:       ['#systems', '#theory', '#organization'],
     owner:      '@odysseus',
     content:    "A **system** is an interconnected set of elements that is coherently organized in a way that achieves something. If you look at that definition closely for a minute, you can see that a system must consist of three kinds of things: _elements_, _interconnections_, and a _function_ or _purpose_.",
     context:    'Thinking in Systems',
@@ -53,6 +57,7 @@ Objects = [
   },
   {
     type:       'Note',
+    sets:       ['#systems', '#feedback'],
     owner:      '@odysseus',
     text:       "Types of feedback loops: **balancing** (pulling stocks towards an ideal size) and **reinforcing** (changes in either direction produce stronger changes in the same direction).",
     source:     'Thinking in Systems',
@@ -61,6 +66,7 @@ Objects = [
   },
   {
     type:       'Note',
+    sets:       ['#systems', '#feedback'],
     owner:      '@odysseus',
     text:       "Some loops in a system have **dominance** (greater influence on behavior). This dominance can shift.",
     source:     'Thinking in Systems',
@@ -70,6 +76,7 @@ Objects = [
   {
     _id:        '126c101c6e58462593c4a35722045d9c',
     type:       'Book',
+    sets:       ['#history', '#philosophy'],
     owner:      '@nemo',
     title:      'The Metaphysical Club',
     author:     'Louis Menand',
@@ -78,6 +85,7 @@ Objects = [
   {
     _id:        '53b72533165045b4bcd3e2333e58c773',
     type:       'Book',
+    sets:       ['#systems', '#theory'],
     owner:      '@odysseus',
     title:      'Thinking in Systems',
     author:     'Donella Meadows',
@@ -86,11 +94,13 @@ Objects = [
   {
     _id:        '565043e91392473ebdc93d0972e7e108',
     type:       'Person',
+    sets:       ['#writers', '#historians', '#the_new_yorker'],
     owner:      '@nemo',
     name:       'Louis Menand'
   },
   {
     _id:        'faa732ca88c64f55964f4b4c6bde382c',
+    sets:       ['#environmental_scientists', '#systems_thinkers'],
     type:       'Person',
     owner:      '@odysseus',
     name:       'Donella Meadows'

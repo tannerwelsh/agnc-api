@@ -68,7 +68,12 @@ The remaining _required_ attributes of an object are determined by the schema de
         {
           "_id":        "d1ff2c9106a146f190b8a50422804a3a",
           "type":       "Quote",
-          "sets":       "#literature #american #truth #philosophy",
+          "sets":       [
+            "#literature",
+            "#american",
+            "#truth",
+            "#philosophy"
+          ],
           "owner":      "@ada",
           "public":     true,
           "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -83,7 +88,11 @@ The remaining _required_ attributes of an object are determined by the schema de
 + Request (application/json)
 
         {
-          "sets":  "#literature #american #truth"
+          "sets": [
+            "#literature",
+            "#american",
+            "#truth"
+          ]
         }
 
 + Response 200 (application/json; charset=utf-8)
@@ -149,7 +158,12 @@ Follow the `next` link in the headers to retrieve the next page of objects. If t
               {
                 "_id":        "d1ff2c9106a146f190b8a50422804a3a",
                 "type":       "Quote",
-                "sets":       "#literature #american #truth #philosophy",
+                "sets":       [
+                  "#literature",
+                  "#american",
+                  "#truth",
+                  "#philosophy"
+                ],
                 "owner":      "@ada",
                 "public":     true,
                 "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -170,7 +184,10 @@ Any authenticated agent may create new objects.
 
         {
           "type":      "Book",
-          "sets":      "#systems #theory",
+          "sets":      [
+            "#systems",
+            "#theory"
+          ],
           "owner":     "@odysseus",
           "title":     "Thinking in Systems",
           "author":    "Donella Meadows",
@@ -338,12 +355,17 @@ Follow the `next` link in the headers to retrieve the next page of objects. If t
     + Body
 
             {
-              "_id": "#literature",
+              "name": "#literature",
               "objects": [
                 {
                   "_id":        "d1ff2c9106a146f190b8a50422804a3a",
                   "type":       "Quote",
-                  "sets":       "#literature #american #truth #philosophy",
+                  "sets":       [
+                    "#literature",
+                    "#american",
+                    "#truth",
+                    "#philosophy"
+                  ],
                   "owner":      "@ada",
                   "public":     true,
                   "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
@@ -351,23 +373,10 @@ Follow the `next` link in the headers to retrieve the next page of objects. If t
                   "content":    "If you tell the truth, you don't have to remember anything.",
                   "context":    null,
                   "source":     "@mark_twain"
-                },
-                {
-                  // ...
                 }
               ],
-              "size":        82,
-              "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+              "size": 82
             }
-
-### Delete Set [DELETE /sets/{set_id}]
-
-Deleting a set removes all references to the set from objects owned by the authenticated agent. It does not affect objects owned by other agents, so sets with the same name could still exist for other agents.
-
-+ Parameters
-    + set_id: `literature` (string, required) - unique name for set
-
-+ Response 204
 
 ## Sets Collection [/sets]
 
@@ -385,32 +394,10 @@ Follow the `next` link in the headers to retrieve the next page of sets. If ther
 
             [
               {
-                "_id":         "#literature",
-                "size":        82,
-                "last_change": "Mon, 28 Sep 2015 11:10:42 GMT"
+                "name": "#literature",
+                "size": 82
               }
             ]
-
-### Create Set [POST]
-
-+ Request (application/json)
-
-        {
-          "_id": "#bank_statements"
-        }
-
-+ Response 201 (application/json; charset=utf-8)
-
-    + Headers
-
-            Location: /sets/bank_statements
-
-    + Body
-
-            {
-              "_id":  "#bank_statements",
-              "_rev": "1-7129fd1022219113f3792191589aab5c"
-            }
 
 ## Group Agent
 
