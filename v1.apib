@@ -121,7 +121,7 @@ Only the owner or an admin agent may delete an object.
     + q: `@ada` (string, optional) - filter by query string
     + owner: `@ada` (string, optional) - filter by owner
     + type: `Quote` (string, optional) - filter by type
-    + set: `#literature` (string, optional) - filter by set
+    + set: `literature` (string, optional) - filter by set
 
 ### Search Objects [GET]
 
@@ -139,10 +139,10 @@ Some examples (not URI-escaped for clarity):
 
 The same set-operation query syntax can be used for the `set` parameter as well, for example:
 
-- `?set=#music #brazil` or `?set=#music | #brazil` = return the intersection of the sets `#music` and `#brazil`
-- `?set=#music + #brazil` = return the union of the sets `#music` and `#brazil`
-- `?set=#music - #brazil` = return the set difference of the sets `#music` and `#brazil`
-- `?set=#music | #brazil - #samba` = return the set difference of the sets `#music | #brazil` and `#samba`
+- `?set=music brazil` or `?set=music | brazil` = return the intersection of the sets `#music` and `#brazil`
+- `?set=music + brazil` = return the union of the sets `#music` and `#brazil`
+- `?set=music - brazil` = return the set difference of the sets `#music` and `#brazil`
+- `?set=music | brazil - samba` = return the set difference of the sets `#music | #brazil` and `#samba`
 
 Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
 
@@ -328,51 +328,6 @@ Follow the `next` link in the headers to retrieve the next page of types. If the
 ## Group Set
 
 Sets represent groupings of objects.
-
-Sets have the following attributes:
-
-- `_id` : Textual identifier for the set. First letter must be the octothorpe `#` character. After that, only alphanumeric characters and underscores allowed.
-- `objects` : Objects within the set.
-- `size` : Number of objects within the set.
-- `last_change` : Timestamp of latest change to the set (object added to or removed from set).
-
-By default all sets will _only_ return objects belonging to the requesting authenticated agent. To include objects belonging to any agent, set `exclusive` to `false`.
-
-### Show Set [GET /sets/{set_name}{?exclusive}]
-
-Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
-
-+ Parameters
-    + set_name: `literature` (string, required) - unique name for set
-    + exclusive: `false` (boolean, optional) - if false, will include objects owned by _any_ agent, not just authenticated agent (defaults to true)
-
-+ Response 200 (application/json; charset=utf-8)
-
-    + Headers
-
-            Link: </sets/literature?page=2>; rel="next", </sets/literature?page=18>; rel="last"
-
-    + Body
-
-            [
-              {
-                "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-                "type":       "Quote",
-                "sets":       [
-                  "#literature",
-                  "#american",
-                  "#truth",
-                  "#philosophy"
-                ],
-                "owner":      "@ada",
-                "public":     true,
-                "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-                "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-                "content":    "If you tell the truth, you don't have to remember anything.",
-                "context":    null,
-                "source":     "@mark_twain"
-              }
-            ]
 
 ## Sets Collection [/sets]
 
