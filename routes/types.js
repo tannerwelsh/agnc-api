@@ -4,13 +4,14 @@ var h = require('./handlers'),
 function typesRouter(express, db) {
   var router = express.Router();
 
-  router.get('/', h.list(db, 'types', 'all'));
-  router.post('/', h.create(db));
-
   router.param('type_id', m.fetch(db, ensureUppercase));
   router.get('/:type_id', h.get(db));
   router.put('/:type_id', h.update(db));
   router.delete('/:type_id', h.destroy(db));
+
+  router.use('/', m.viewFinder);
+  router.get('/', h.list(db));
+  router.post('/', h.create(db));
 
   return router;
 }

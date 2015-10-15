@@ -21,6 +21,7 @@ function routesRouter(express, app) {
       routeMap[path] = [];
 
       layer.handle.stack.forEach(function(stack) {
+        if (!stack.route) return;
         Object.keys(stack.route.methods).forEach(function(method) {
           var routeName = method.toUpperCase()+': '+stack.route.path;
           routeMap[path].push(routeName);

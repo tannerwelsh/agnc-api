@@ -15,6 +15,31 @@ function fetch(db, before) {
   };
 }
 
+function viewFinder(req, res, next) {
+  var design, view, queryParams, queryKey;
+
+  design = req.baseUrl.replace('/', '');
+
+  delete req.query.q; // TODO: parse 'q' query param
+
+  if (req.query.set && req.query.set[0] !== '#')
+    req.query.set = '#'+req.query.set;
+
+  queryParams = Object.keys(req.query).sort();
+
+  if (queryParams.length > 0) {
+    view = 'by_'+queryParams.join('_and_');
+    queryKey = queryParams.map(function(k) { return req.query[k]; });
+  }
+
+  req.design = design;
+  req.view = view || 'all';
+  req.queryKey = queryKey;
+
+  next();
+}
+
 module.exports = {
-  fetch: fetch
+  fetch: fetch,
+  viewFinder: viewFinder
 };
