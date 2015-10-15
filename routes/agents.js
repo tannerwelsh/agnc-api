@@ -4,7 +4,7 @@ var h = require('./handlers'),
 function agentsRouter(express, db) {
   var router = express.Router();
 
-  router.get('/', h.list(db, 'agents'));
+  router.get('/', h.list(db, 'agents', 'all'));
   router.post('/', h.create(db));
 
   router.param('agent_id', m.fetch(db, prependAtSymbol));

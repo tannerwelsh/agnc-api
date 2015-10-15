@@ -4,7 +4,7 @@ var h = require('./handlers'),
 function objectsRouter(express, db) {
   var router = express.Router();
 
-  router.get('/', h.list(db, 'objects'));
+  router.get('/', h.list(db, 'objects', 'all'));
   router.post('/', h.create(db));
 
   router.param('object_id', m.fetch(db));

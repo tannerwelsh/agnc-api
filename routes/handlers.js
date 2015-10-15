@@ -1,6 +1,6 @@
 var merge = require('merge');
 
-function listResources(db, viewName, opts) {
+function listResources(db, designDoc, viewName, opts) {
   opts = opts || {};
 
   var remap = opts.remap || function(doc) { return doc.value; };
@@ -13,7 +13,12 @@ function listResources(db, viewName, opts) {
     opts.limit = opts.limit || 10;
     opts.skip = (page - 1) * opts.limit;
 
-    db.view(viewName, 'all', opts, function(err, body) {
+    if (opts.byId && req[opts.byId]) {
+      opts.key = req[opts.byId];
+      delete opts.byId;
+    }
+
+    db.view(designDoc, viewName, opts, function(err, body) {
       if (err)
         return res.json({error: err.error, message: err.message});
 
