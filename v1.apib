@@ -338,12 +338,12 @@ Sets have the following attributes:
 
 By default all sets will _only_ return objects belonging to the requesting authenticated agent. To include objects belonging to any agent, set `exclusive` to `false`.
 
-### Show Set [GET /sets/{set_id}{?exclusive}]
+### Show Set [GET /sets/{set_name}{?exclusive}]
 
 Follow the `next` link in the headers to retrieve the next page of objects. If there is no `next` link, then it is the last page.
 
 + Parameters
-    + set_id: `literature` (string, required) - unique name for set
+    + set_name: `literature` (string, required) - unique name for set
     + exclusive: `false` (boolean, optional) - if false, will include objects owned by _any_ agent, not just authenticated agent (defaults to true)
 
 + Response 200 (application/json; charset=utf-8)
@@ -354,29 +354,25 @@ Follow the `next` link in the headers to retrieve the next page of objects. If t
 
     + Body
 
-            {
-              "name": "#literature",
-              "objects": [
-                {
-                  "_id":        "d1ff2c9106a146f190b8a50422804a3a",
-                  "type":       "Quote",
-                  "sets":       [
-                    "#literature",
-                    "#american",
-                    "#truth",
-                    "#philosophy"
-                  ],
-                  "owner":      "@ada",
-                  "public":     true,
-                  "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-                  "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
-                  "content":    "If you tell the truth, you don't have to remember anything.",
-                  "context":    null,
-                  "source":     "@mark_twain"
-                }
-              ],
-              "size": 82
-            }
+            [
+              {
+                "_id":        "d1ff2c9106a146f190b8a50422804a3a",
+                "type":       "Quote",
+                "sets":       [
+                  "#literature",
+                  "#american",
+                  "#truth",
+                  "#philosophy"
+                ],
+                "owner":      "@ada",
+                "public":     true,
+                "created_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                "updated_at": "Mon, 28 Sep 2015 16:48:56 GMT",
+                "content":    "If you tell the truth, you don't have to remember anything.",
+                "context":    null,
+                "source":     "@mark_twain"
+              }
+            ]
 
 ## Sets Collection [/sets]
 
