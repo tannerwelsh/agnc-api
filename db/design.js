@@ -6,8 +6,50 @@ var designDocs = [
       all: {
         map: function(doc) { if(doc.type) emit(null, doc); }
       },
+      by_owner: {
+        map: function(doc) { if(doc.type) emit([doc.owner], doc); }
+      },
+      by_set: {
+        map: function (doc) {
+          if (!doc.type || !doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit([set], doc);
+          });
+        }
+      },
       by_type: {
-        map: function(doc) { if(doc.type) emit(doc.type, doc); }
+        map: function(doc) { if(doc.type) emit([doc.type], doc); }
+      },
+      by_owner_and_set: {
+        map: function (doc) {
+          if (!doc.type || !doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit([doc.owner, set], doc);
+          });
+        }
+      },
+      by_owner_and_type: {
+        map: function(doc) { if(doc.type) emit([doc.owner, doc.type], doc); }
+      },
+      by_set_and_type: {
+        map: function (doc) {
+          if (!doc.type || !doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit([set, doc.type], doc);
+          });
+        }
+      },
+      by_owner_and_set_and_type: {
+        map: function (doc) {
+          if (!doc.type || !doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit([doc.owner, set, doc.type], doc);
+          });
+        }
       }
     }
   },
