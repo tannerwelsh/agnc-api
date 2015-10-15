@@ -12,7 +12,8 @@ var db = require('./db')(env.COUCHDB_HOST, env.COUCHDB_NAME).connect();
 var routes = require('./routes/index'),
     objects = require('./routes/objects')(express, db),
     types = require('./routes/types')(express, db),
-    agents = require('./routes/agents')(express, db);
+    agents = require('./routes/agents')(express, db),
+    sets = require('./routes/sets')(express, db);
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/objects', objects);
 app.use('/types', types);
 app.use('/agents', agents);
+app.use('/sets', sets);
 app.use('/', routes(express, app));
 
 // catch 404 and forward to error handler
