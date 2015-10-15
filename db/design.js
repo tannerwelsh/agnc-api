@@ -41,8 +41,15 @@ var designDocs = [
             emit(set, 1);
           });
         },
-        reduce: function(keys, values, rereduce) {
-          return sum(values);
+        reduce: '_sum'
+      },
+      show: {
+        map: function(doc) {
+          if(!doc.sets) return null;
+
+          doc.sets.forEach(function(set) {
+            emit(set, doc);
+          });
         }
       }
     }
