@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var env = require('../env'),
+    db = require('../db')(env.COUCHDB_HOST, env.COUCHDB_NAME),
+    seed = require('../db/seed'),
+    design = require('../db/design');
+
+switch (process.argv[2]) {
+  case 'create':
+    db.create();
+    break;
+  case 'destroy':
+    db.destroy();
+    break;
+  case 'reset':
+    db.destroy(function(err) {
+      if (err) return console.error(err);
+      db.create(function(err) {
+        if (err) return console.error(err);
+        var connection = db.connect();
+        seed(connection);
+        design(connection);
+      });
+    });
+    break;
+  case 'seed':
+    seed(db.connect());
+    break;
+  case 'design':
+    design(db.connect());
+    break;
+  default:
+    console.log("Command '" + String(process.argv[2]) + "' not recognized.");
+    break;
+}
