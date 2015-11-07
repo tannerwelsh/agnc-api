@@ -5,7 +5,15 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var env = require('./env');
+
+var db = require('./db')(env.COUCHDB_HOST, env.COUCHDB_NAME).connect();
+
+var routes = require('./routes/index'),
+    objects = require('./routes/objects')(express, db),
+    types = require('./routes/types')(express, db),
+    agents = require('./routes/agents')(express, db),
+    sets = require('./routes/sets')(express, db);
 
 var app = express();
 
@@ -21,7 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/objects', objects);
+app.use('/types', types);
+app.use('/agents', agents);
+app.use('/sets', sets);
+app.use('/', routes(express, app));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

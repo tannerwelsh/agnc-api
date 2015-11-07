@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+var repl = require('repl'),
+    env = require('../env');
+
+// Set global variables
+db = require('../db')(env.COUCHDB_HOST, env.COUCHDB_NAME).connect();
+
+// Start console
+launchConsole();
+
+function launchConsole() {
+  var r = repl.start({
+    prompt: '> ',
+    input: process.stdin,
+    output: process.stdout,
+    useGlobal: true
+  });
+
+  r.on('exit', function () {
+    console.log('Exiting console...');
+    process.exit();
+  });
+}

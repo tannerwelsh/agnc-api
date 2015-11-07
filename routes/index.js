@@ -1,9 +1,39 @@
-var express = require('express');
-var router = express.Router();
+function routesRouter(express, app) {
+  var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+  router.get('/', function(req, res, next) {
+    var bases = ['/', '/objects', '/types', '/agents', '/sets'],
+        routeMap = {};
 
-module.exports = router;
+    app._router.stack.forEach(function(layer) {
+      if (layer.name !== 'router')
+        return;
+
+      var path;
+
+      for (var i in bases) {
+        if (layer.regexp.test(bases[i])) {
+          path = bases[i];
+          break;
+        }
+      }
+
+      routeMap[path] = [];
+
+      layer.handle.stack.forEach(function(stack) {
+        if (!stack.route) return;
+        Object.keys(stack.route.methods).forEach(function(method) {
+          var routeName = method.toUpperCase()+': '+stack.route.path;
+          routeMap[path].push(routeName);
+        });
+      });
+    });
+
+    res.status(200)
+       .json(routeMap);
+  });
+
+  return router;
+}
+
+module.exports = routesRouter;
