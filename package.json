@@ -4,6 +4,7 @@
   "description": "API for AGNC",
   "main": "app.js",
   "scripts": {
+    "deploy": "NODE_ENV=production PORT=3333 nodemon bin/server",
     "start": "nodemon bin/server",
     "test": "bin/test"
   },
