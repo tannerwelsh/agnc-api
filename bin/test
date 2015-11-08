@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
 export NODE_ENV=test
-export COUCHDB_NAME=agnc_test
 
 resetDB () {
   ./bin/db reset
