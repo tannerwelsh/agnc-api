@@ -6,6 +6,9 @@ var env = require('../env'),
     design = require('../db/design');
 
 switch (process.argv[2]) {
+  case 'start':
+    process.exec('couchdb');
+    break;
   case 'create':
     db.create();
     break;
